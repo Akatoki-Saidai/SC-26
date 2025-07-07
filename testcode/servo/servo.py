@@ -1,4 +1,4 @@
-https://0918.jp/wp/post-2658/
+# https://0918.jp/wp/post-2658/ より引用
 #!/usr/bin/python
 import pigpio   # pigpioモジュールの読み込み
 import time     # timeモジュールの読bみ込み
