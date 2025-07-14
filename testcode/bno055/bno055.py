@@ -25,6 +25,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+
+# このコードの動かし方
+# 1. ラズパイを起動
+# 2. ターミナル(黒い画面)を開く
+# 3. 次のコマンドを実行
+#   cd ~/sc26_project
+#   .  sc26_env/bin/activate           <==必ず実行！！！ 仮想環境に入る
+#   sudo pigpiod                       <==必ず実行！！！ pigpioデーモンを起動
+#   cd SC-26
+#   git pull
+#   python testcode/bno055/bno055.py
+
+
 # import binascii  # UARTによる通信を行うときのみ使用
 from logging import getLogger, StreamHandler  # ログを記録するため
 import time
