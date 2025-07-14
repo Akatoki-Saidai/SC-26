@@ -1,4 +1,5 @@
-# このコードは次のサイトから複製し，一部改変したものです
+# このコードはSC25のコードをコピーしたものです
+# このコードは以下のコードが元となっています
 # https://github.com/adafruit/Adafruit_Python_BNO055/blob/master/Adafruit_BNO055/BNO055.py
 # 以下の条件のもと，利用することができます．
 
