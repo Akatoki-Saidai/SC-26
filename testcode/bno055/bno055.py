@@ -32,7 +32,7 @@ import time
 import pigpio
 # import serial  # UARTによる通信を行うときに使用
 
-import calc_goal  # ゴールまでの距離と方向を計算
+# import calc_goal  # ゴールまでの距離と方向を計算
 
 # I2C addresses
 BNO055_ADDRESS_A                     = 0x28
@@ -778,7 +778,7 @@ class BNO055(object):
                 data["grav"][0], data["grav"][1], data["grav"][2] = self.read_gravity()
                 # self.read_quaternion()
                 # self.read_temp()
-                calc_goal.calc_goal(data)  # ゴールまでの距離と向きを計算
+                # calc_goal.calc_goal(data)  # ゴールまでの距離と向きを計算
                 time.sleep(0.2)
             except Exception as e:
                 self._logger.exception(f"An error occured in bno055 get_forever: {e}")
