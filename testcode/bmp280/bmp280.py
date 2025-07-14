@@ -5,6 +5,29 @@
 # CSBピンは3V3に繋ぐ
 # SDOピンはGNDに繋ぐとI2Cアドレスが0x76になり(デフォルト)，3V3に繋ぐとi2Cアドレスが0x77になる
 
+
+# このコードの動かし方
+# 1. ラズパイを起動
+# 2. ターミナル(黒い画面)を開く
+# 3. 次のコマンドを実行
+#   cd ~/sc26_project
+#   .  sc26_env/bin/activate           <==必ず実行！！！ 仮想環境に入る
+#   cd SC-26
+#   git pull
+#   python testcode/bmp280/bmp280.py
+
+# もし，次のエラーが表示されたら
+#   ModuleNotFoundError: No module named 'smbus2'
+# 仮想環境内で!!! 次のコードを実行
+#   pip install smbus2
+
+# もし，次のエラーが表示されたら
+#  FileNotFoundError: [Errno 2] No such file or directory: '/dev/i2c-1'
+# ターミナルで次のコマンドを実行
+#   sudo raspi-config
+# Interface Options を選択した後に，I2Cを有効化する
+
+
 import time  # sleepなどを使うため
 from logging import getLogger, StreamHandler  # ログを記録するため
 
