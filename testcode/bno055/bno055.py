@@ -229,7 +229,7 @@ OPERATION_MODE_NDOF                  = 0X0C
 
 
 class BNO055(object):
-    def __init__(self, rst=None, address=BNO055_ADDRESS_A, i2c_bus=1, serial_port=None, serial_timeout_sec=5, logger=None):
+    def __init__(self, rst=None, address=BNO055_ADDRESS_B, i2c_bus=1, serial_port=None, serial_timeout_sec=5, logger=None):
         """BNO055のセットアップ"""
 
         # もしloggerが渡されなかったら，ログの記録先を標準出力に設定
