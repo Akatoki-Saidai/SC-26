@@ -229,7 +229,7 @@ OPERATION_MODE_NDOF                  = 0X0C
 
 
 class BNO055(object):
-    def __init__(self, rst=None, address=BNO055_ADDRESS_B, i2c_bus=1, serial_port=None, serial_timeout_sec=5, logger=None):
+    def __init__(self, rst=None, address=BNO055_ADDRESS_A, i2c_bus=1, serial_port=None, serial_timeout_sec=5, logger=None):
         """BNO055のセットアップ"""
 
         # もしloggerが渡されなかったら，ログの記録先を標準出力に設定
@@ -803,7 +803,7 @@ if __name__ == "__main__":
         # Create and configure the BNO sensor connection.  Make sure only ONE of the
         # below 'bno = ...' lines is uncommented:
         # Raspberry Pi configuration with serial UART and RST connected to GPIO 18:
-        bno = BNO055()
+        bno = BNO055(address=BNO055_ADDRESS_B)
         # BeagleBone Black configuration with default I2C connection (SCL=P9_19, SDA=P9_20),
         # and RST connected to pin P9_12:
         #bno = BNO055.BNO055(rst='P9_12')
