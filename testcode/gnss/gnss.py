@@ -3,7 +3,7 @@ from threading import Thread
 import time
 from micropyGPS import MicropyGPS
 import serial
-import calc_goal
+# import calc_goal
 
 class GNSS:
     def __init__(self, logger=None):
@@ -54,7 +54,7 @@ class GNSS:
                     })
 
                     # 目標地点までの計算
-                    calc_goal.calc_goal(data)
+                    # calc_goal.calc_goal(data)
                 time.sleep(1)
             except Exception as e:
                 self._logger.exception(f"Error in GNSS loop: {e}")
