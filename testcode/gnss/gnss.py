@@ -15,7 +15,7 @@ class GNSS:
         self._logger = logger
 
         # シリアル通信設定（GNSSモジュールと接続）
-        self._uart = serial.Serial('/dev/serial0', 38400, timeout=10)
+        self._uart = serial.Serial('/dev/serial0', 9600, timeout=10)
 
         # GPSパーサの設定（MicropyGPS）
         self._pygps = MicropyGPS(9, 'dd')  # JST（UTC+9）、度（dd）表記
