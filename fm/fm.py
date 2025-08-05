@@ -92,14 +92,14 @@ def wait_phase(devices, data):
             time.sleep(0.1)
             # ここに待機フェーズの処理を書いて
             # 高度が十分高い場合
-            if 15 > data["alt"]:
-                formal_alt = data["alt"]
+            if 15 < data["alt"]:
+                prev_alt = data["alt"]
                 time.sleep(5)
-                #　ある程度時間が経過後も高度が十分高く、かつ少しでも高度が変化している場合、待機フェーズを終了
-                if 15 > data["alt"] and data["alt"] != data["alt"]:
-                    print(\n\n)
+                # ある程度時間が経過後も高度が十分高く、かつ少しでも高度が変化している場合、待機フェーズを終了
+                if 15 < data["alt"] and prev_alt != data["alt"]:
+                    print("\n\n")
                     logger.info("Ended wait phase")
-                    print(\n\n)
+                    print("\n\n")
                     break
         except Exception as e:
             logger.exception(f"An error occured in wait phase:{e}")
@@ -120,9 +120,21 @@ def fall_phase(devices, data):
         try:
             time.sleep(0.1)
             # ここに落下フェーズの処理を書いて
-            #
-            #
-            #
+            # 地面近くで静止している場合
+            if data["alt"] < 5 and sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["line_accel"]) < 0.025:
+                prev_line_accel, prev_gyro = copy.copy(data["line_accel"]), copy.copy(data["gyro"])
+                time.sleep(5)
+                # ある程度時間が経過後も地面近くで静止し、かつ少しでも高度が変化している場合、NiCr線を焼き切る
+                if sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["gyro"]) < 0.05 and prev_line_accel != data["line_accel"] and prev_gyro != data["gyro"]:
+                    logger.info("Turn on to cut nicr")
+                    devices["raspi"].write(NICR_PIN, 1) # NiCr線に電流を流す(ON)
+                    time.sleep(5)
+                    devices["raspi"].write(NICR_PIN, 0) # NiCr線に電流を流すのをストップ(OFF)
+                    logger.info("Turn off nicr")
+                    print("\n\n")
+                    logger.info("Ended fall phase")
+                    print("\n\n")
+                    break
         except Exception as e:
             logger.exception(f"An error occured in fall phase: {e}")
 
@@ -142,7 +154,13 @@ def long_phase(devices, data):
     # 機体がひっくり返っていたら回る
     try:
         # ここに機体の向きを判定する処理を書く
-        pass
+        if data["gyro"][2] < 0:
+            start_time = time.time()
+            devices["motor"].accel()
+            logger.info("muki_hantai")
+            while data["gyro"][2] < 0 and time.time() - start_time < 5:
+                pass
+            devices["motor"].stop()
     except Exception as e:
         logger.exception(f"An error occured in muki_hantai: {e}")
     
@@ -151,9 +169,22 @@ def long_phase(devices, data):
         try:
             time.sleep(0.1)
             # ここに長距離フェーズの処理を書いて
-            #
-            #
-            #
+            if data["goal_angle"] < 36 or 324 <= data["goal_angle"]:
+                devices["motor"].accel() # 機体前進
+            elif 36 <= data["goal_angle"] < 180:
+                devices["motor"].rightcurve # 機体を右へ進ませる
+            elif 180<= data["goal_angle"]  <360:
+                devices["motor"].leftcurve # 機体を左へ進ませる
+            
+            # GPSがタイムアウト
+            if time.time() - long_start_time > 360 and data["goal_angle"] is None:
+                break
+            
+            # ゴールが近づいたら遠距離フェーズを終了
+            if data["goal_distance"] < 5:
+                print("\n\n")
+                logger.info("Ended long phase")
+                print("\n\n")
         except Exception as e:
             logger.exception(f"An error occured in long phase approaching: {e}")
 
@@ -172,8 +203,22 @@ def short_phase(devices, data, camera_order):
         try:
             time.sleep(0.1)
             # ここに近距離フェーズの処理を書いて
-            #
-            #
+            if camera_order.value == 0: # コーンが見つからなかった場合
+                devices["motor"].leftturn()
+                time.sleep(0.3)
+                devices["motor"].stop()
+                time.sleep(0.7)
+            elif camera_order.value == 1: # コーンが正面にあった場合
+                devices["motor"].accel()
+            elif camera_order.value == 2: # コーンが右にあった場合
+                devices["motor"].rightturn()
+            elif camera_order.value == 3: # コーンが左にあった場合
+                devices["motor"].leftturn()
+            elif camera_order.value == 4: #コーンが十分に大きく見えた場合、近距離フェーズを終了
+                print("\n\n")
+                logger.info("Ended short phase")
+                print("\n\n")
+                break
         except Exception as e:
             logger.exception(f"An error occured in short phase moving: {e}")
 
