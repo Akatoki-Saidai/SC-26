@@ -91,9 +91,16 @@ def wait_phase(devices, data):
         try:
             time.sleep(0.1)
             # ここに待機フェーズの処理を書いて
-            #
-            #
-            #
+            # 高度が十分高い場合
+            if 15 > data["alt"]:
+                formal_alt = data["alt"]
+                time.sleep(5)
+                #　ある程度時間が経過後も高度が十分高く、かつ少しでも高度が変化している場合、待機フェーズを終了
+                if 15 > data["alt"] and data["alt"] != data["alt"]:
+                    print(\n\n)
+                    logger.info("Ended wait phase")
+                    print(\n\n)
+                    break
         except Exception as e:
             logger.exception(f"An error occured in wait phase:{e}")
 
