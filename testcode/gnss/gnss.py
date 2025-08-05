@@ -28,9 +28,10 @@ class GNSS:
         """GNSSモジュールからのデータをリアルタイムで読み取り、MicropyGPSに渡す"""
         while True:
             read_str = self._uart.read(self._uart.in_waiting).decode('utf-8', errors='ignore')
+            print(read_str, end='')  # NMEA文を確認できるように表示
             for char in read_str:
                 if 10 <= ord(char) <= 126:
-                    print(char, end='')  # NMEA文を確認できるように表示
+                    # print(char, end='')  # NMEA文を確認できるように表示
                     self._pygps.update(char)
 
     def get_forever(self, data: dict):
@@ -42,7 +43,7 @@ class GNSS:
                     lon = self._pygps.longitude[0]
                     date = self._pygps.date
                     time_ = self._pygps.timestamp
-                    offset = self._pygps.localoffset
+                    offset = self._pygps.local_offset
                     datetime_gnss = f"20{date[2]:02}-{date[1]:02}-{date[0]:02}T{time_[0]:02}:{time_[1]:02}:{time_[2]:05.2f}{offset:+03}:00"
 
                     self._logger.debug(f"lat: {lat}, lon: {lon}, alt: {self._pygps.altitude}, speed: {self._pygps.speed}, gnss_datetime: {datetime_gnss}")
