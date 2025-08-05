@@ -28,9 +28,10 @@ class GNSS:
         """GNSSモジュールからのデータをリアルタイムで読み取り、MicropyGPSに渡す"""
         while True:
             read_str = self._uart.read(self._uart.in_waiting).decode('utf-8', errors='ignore')
+            print(read_str, end='')  # NMEA文を確認できるように表示
             for char in read_str:
                 if 10 <= ord(char) <= 126:
-                    print(char, end='')  # NMEA文を確認できるように表示
+                    # print(char, end='')  # NMEA文を確認できるように表示
                     self._pygps.update(char)
 
     def get_forever(self, data: dict):
