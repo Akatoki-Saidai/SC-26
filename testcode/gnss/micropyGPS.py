@@ -835,7 +835,7 @@ class MicropyGPS(object):
                 else:  # Default date format
                     date_string = month + '/' + day + '/' + year
 
-            self._logger.debug(f'gnss_time: 20{self.date[2]:02}-{self.date[1]:02}-{self.date[0]:02}T{self.timestamp[0]:02}:{self.timestamp[1]:02}:{self.timestamp[2]:05.2f}{self.localoffset:+02}:00')  # 測定値を記録
+            self._logger.debug(f'gnss_time: 20{self.date[2]:02}-{self.date[1]:02}-{self.date[0]:02}T{self.timestamp[0]:02}:{self.timestamp[1]:02}:{self.timestamp[2]:05.2f}{self.local_offset:+02}:00')  # 測定値を記録
             return date_string
         except Exception as e:
             self._logger.exception("An error occured!")
