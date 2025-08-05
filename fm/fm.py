@@ -45,10 +45,10 @@ def setup(devices):
         devices["servo"] = SG90(pin=26, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
 
         # pigpioのセットアップ(omusubi0はpigpio自動有効化設定済)
-        devices["pi"] = pigpio.pi()
+        devices["raspi"] = pigpio.pi()
         # NiCr線のセットアップ
-        devices["pi"].set_mode(NICR_PIN, pigpio.OUTPUT)  # NiCrのピンを出力モードに設定
-        devices["pi"].write(NICR_PIN, 0)  # NiCrをオフにしておく
+        devices["raspi"].set_mode(NICR_PIN, pigpio.OUTPUT)  # NiCrのピンを出力モードに設定
+        devices["raspi"].write(NICR_PIN, 0)  # NiCrをオフにしておく
 
         # スピーカーのセットアップ (ピンは19, 18)
         devices["speaker"] = Speaker(logger=logger)
@@ -246,7 +246,7 @@ if __name__ == "__main__":
             "gnss": None,
             "motor": None,
             "servo": None,
-            "pi": None,
+            "raspi": None,
             "speaker":None
         }
 
