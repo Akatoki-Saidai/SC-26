@@ -7,6 +7,11 @@ IN2_GPIO = 19
 
 pi = pigpio.pi()
 
+# Stop
+pi.hardware_PWM(IN2_GPIO, 0, 0)
+pi.hardware_PWM(IN1_GPIO, 0, 0)
+# time.sleep(30)
+
 while True:
     # Forward 20% 
     # IN2 - HI75% : LO25%
@@ -18,6 +23,6 @@ while True:
     # Stop
     pi.hardware_PWM(IN2_GPIO, 0, 0)
     pi.hardware_PWM(IN1_GPIO, 0, 0)
-    time.sleep(30)
+    time.sleep(10)
 
 pi.stop()
