@@ -10,24 +10,30 @@ L2_GPIO = 19
 pi = pigpio.pi()
 
 # Stop
-pi.hardware_PWM(R1_GPIO, 0, 0)
-pi.hardware_PWM(R2_GPIO, 0, 0)
-pi.hardware_PWM(L1_GPIO, 0, 0)
-pi.hardware_PWM(L2_GPIO, 0, 0)
+pi.hardware_PWM(R1_GPIO, 200000, 0)
+pi.hardware_PWM(R2_GPIO, 200000, 0)
+pi.hardware_PWM(L1_GPIO, 200000, 0)
+pi.hardware_PWM(L2_GPIO, 200000, 0)
 # time.sleep(30)
 
-while True:
-    # Forward 20% 
-    # IN2 - HI75% : LO25%
-    input("move?")
-    pi.hardware_PWM(L2_GPIO, 200000, 1000000)
-    # IN1 - HI100% : LO0%
-    pi.hardware_PWM(R1_GPIO, 200000, 1000000)
-    time.sleep(4)
+try:
+    while True:
+        # Forward 20% 
+        # IN2 - HI75% : LO25%
+        input("move?")
+        pi.hardware_PWM(L2_GPIO, 200000, 1000000)
+        # IN1 - HI100% : LO0%
+        pi.hardware_PWM(R1_GPIO, 200000, 1000000)
+        time.sleep(4)
 
-    # Stop
+        # Stop
+        pi.hardware_PWM(L2_GPIO, 200000, 0)
+        pi.hardware_PWM(R1_GPIO, 200000, 0)
+        time.sleep(0.5)
+except KeyboardInterrupt:
+    print("終了します。PWMを停止します。")
     pi.hardware_PWM(L2_GPIO, 0, 0)
     pi.hardware_PWM(R1_GPIO, 0, 0)
-    time.sleep(0.5)
-
-pi.stop()
+    pi.hardware_PWM(R2_GPIO, 0, 0)
+    pi.hardware_PWM(L1_GPIO, 0, 0)
+    pi.stop()
