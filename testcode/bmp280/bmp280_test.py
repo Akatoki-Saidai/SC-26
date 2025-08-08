@@ -282,7 +282,7 @@ if __name__ == '__main__':
             print(f"pressure: {pressure}")
             print(f"altitude: {altitude}")
             
-            with open("~/bmplog.txt", "a") as f:
+            with open("bmplog.txt", "a") as f:
                 f.write(f"{time.time()},1,{temperature},{pressure},{altitude}\n")
             
             time.sleep(1)
