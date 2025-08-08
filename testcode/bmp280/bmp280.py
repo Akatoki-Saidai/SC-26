@@ -83,6 +83,7 @@ class BMP280:
         
         # 起動直後は測定が終わっておらず値が異常なので空受信
         for i in range(20):
+            
             self.read()
             time.sleep(0.1)
         self._get_qnh()  # 高度0m地点とする場所の気圧を保存
@@ -273,6 +274,10 @@ if __name__ == '__main__':
     while True:
         try:
             temperature, pressure, _, altitude = bmp.read()  # 温度，気圧(，湿度), 高度を読み取り
+            print(f"temperature: {temperature}")
+            print(f"pressure: {pressure}")
+            print(f"altitude: {altitude}")
+            
             time.sleep(1)
         except Exception as e:
             print(f"Unexpected error occcured: {e}")
