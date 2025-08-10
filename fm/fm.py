@@ -198,16 +198,16 @@ def short_phase(devices, data, camera_order):
             time.sleep(0.1)
             # ここに近距離フェーズの処理を書いて
             if camera_order.value == 0: # コーンが見つからなかった場合
-                devices["motor"].leftturn()
+                devices["motor"].turn(90)
                 time.sleep(0.3)
                 devices["motor"].stop()
                 time.sleep(0.7)
             elif camera_order.value == 1: # コーンが正面にあった場合
-                devices["motor"].accel()
+                devices["motor"].turn(0)
             elif camera_order.value == 2: # コーンが右にあった場合
-                devices["motor"].rightturn()
+                devices["motor"].turn(90)
             elif camera_order.value == 3: # コーンが左にあった場合
-                devices["motor"].leftturn()
+                devices["motor"].turn(270)
             elif camera_order.value == 4: #コーンが十分に大きく見えた場合、近距離フェーズを終了
                 print("\n\n")
                 logger.info("Ended short phase")

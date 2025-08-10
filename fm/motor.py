@@ -63,6 +63,8 @@ class Motor:
         """指定した角度だけ回転
         angle: 0~360度，0:前進，90:右旋回，...
         """
+        angle %= 360  # 角度を0~360の範囲に正規化
+        self._logger.debug(f"Turning to angle: {angle}")
         if 0 <= angle and angle < 180:
             self.set_right(1 - angle / 90)
             self.set_left(1)
