@@ -125,7 +125,9 @@ class Camera:
 
     def get_forever(self, devices, camera_order, show=False):
         """カメラを起動し、コーンの検出を継続的に行う"""
-        devices["servo"].set_angle(0)
+        devices["servo1"].set_angle(0)
+        devices["servo2"].set_angle(0)
         while True:
             camera_order.value = self.judge_cone(show)
-            # devices["servo"].set_angle(-15)
+            # devices["servo1"].set_angle(-15)
+            # devices["servo2"].set_angle(-15)

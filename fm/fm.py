@@ -18,7 +18,7 @@ import shutil
 
 logger = sc_logging.get_logger(__name__)
 
-NICR_PIN = 10  # ニクロム線のGPIO番号
+NICR_PIN = 6  # ニクロム線のGPIO番号
 
 GOAL_LAT = 30.3741583  # ゴールの緯度(2025/03/08/08:27)
 GOAL_LON = 130.960075  # ゴールの経度(2025/03/08/08:27)
@@ -38,20 +38,17 @@ def setup(devices):
         devices["gnss"] = GNSS(logger=logger)
 
         # モーターをセットアップ
-        devices["motor"] = Motor(right_pin1=20, right_pin2=21, left_pin1=5, left_pin2=7, logger=logger)
+        devices["motor"] = Motor(right_pin1=18, right_pin2=12, left_pin1=13, left_pin2=19, logger=logger)
 
         # サーボモーターのセットアップ
-        devices["servo"] = SG90(pin=26, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
+        devices["servo1"] = SG90(pin=20, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
+        devices["servo2"] = SG90(pin=20, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
 
         # pigpioのセットアップ(omusubi0はpigpio自動有効化設定済)
         devices["raspi"] = pigpio.pi()
         # NiCr線のセットアップ
         devices["raspi"].set_mode(NICR_PIN, pigpio.OUTPUT)  # NiCrのピンを出力モードに設定
         devices["raspi"].write(NICR_PIN, 0)  # NiCrをオフにしておく
-
-        # スピーカーのセットアップ (ピンは19, 18)
-        devices["speaker"] = Speaker(logger=logger)
-        devices["speaker"].audio_play("Windows7_boot.wav")
 
         # LEDのセットアップ
         ## 基板にLEDをつけ忘れた...
@@ -234,7 +231,8 @@ if __name__ == "__main__":
             "bno": None,
             "gnss": None,
             "motor": None,
-            "servo": None,
+            "servo1": None,
+            "servo2": None,
             "raspi": None,
             "speaker":None
         }
