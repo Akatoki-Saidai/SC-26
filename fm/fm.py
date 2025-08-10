@@ -14,7 +14,6 @@ from sg90 import SG90
 import sc_logging
 from motor import Motor
 from speaker import Speaker
-import start_gui
 import shutil
 
 logger = sc_logging.get_logger(__name__)
@@ -67,10 +66,6 @@ def camera_setup_and_start(camera_order, show=False):
         # カメラで画像認識し続ける
         camera_thread = Thread(target=camera.get_forever, args=(devices, camera_order, show,))
         camera_thread.start()
-
-        # GUIに定期的に書き込む
-        gui_thread = Thread(target=start_gui.write_to_gui, args=(devices, data,), kwargs={'logger': logger})
-        gui_thread.start()
         
     except Exception as e:
         logger.exception(f"An error occured in setup and start camera: {e}")
@@ -265,14 +260,6 @@ if __name__ == "__main__":
         # 並行処理でGNSSによる測定をし続け，dataに代入し続ける
         gnss_thread = Thread(target=devices["gnss"].get_forever, args=(data,))
         gnss_thread.start()  # GNSSによる測定をスタート
-
-        # GUI用のサーバーを起動
-        server_thread = Thread(target=start_gui.start_server, kwargs={'logger': logger})
-        server_thread.start()
-
-        # 並列処理でGUIの表示データを更新
-        gui_thread = Thread(target=start_gui.write_to_gui, args=(devices, data,), kwargs={'logger': logger})
-        gui_thread.start()  # GUIの更新をスタート
 
         # 待機フェーズを実行
         wait_phase(devices, data)
