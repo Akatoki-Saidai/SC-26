@@ -156,11 +156,11 @@ def long_phase(devices, data):
         # ここに機体の向きを判定する処理を書く
         if data["gyro"][2] < 0:
             start_time = time.time()
-            devices["motor"].accel()
+            devices["motor"].turn(0) # 0度(前進)に向く
             logger.info("muki_hantai")
             while data["gyro"][2] < 0 and time.time() - start_time < 5:
                 pass
-            devices["motor"].stop()
+            devices["motor"].turn(0) # 0度(前進)に向く
     except Exception as e:
         logger.exception(f"An error occured in muki_hantai: {e}")
     
@@ -168,13 +168,7 @@ def long_phase(devices, data):
     while True:
         try:
             time.sleep(0.1)
-            # ここに長距離フェーズの処理を書いて
-            if data["goal_angle"] < 36 or 324 <= data["goal_angle"]:
-                devices["motor"].accel() # 機体前進
-            elif 36 <= data["goal_angle"] < 180:
-                devices["motor"].rightcurve # 機体を右へ進ませる
-            elif 180<= data["goal_angle"]  <360:
-                devices["motor"].leftcurve # 機体を左へ進ませる
+            devices["motor"].turn(data["goal_angle"]) # 回転する
             
             # GPSがタイムアウト
             if time.time() - long_start_time > 360 and data["goal_angle"] is None:
