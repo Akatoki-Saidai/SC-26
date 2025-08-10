@@ -13,7 +13,7 @@ from gnss import GNSS
 from sg90 import SG90
 import sc_logging
 from motor import Motor
-from speaker import Speaker
+# from speaker import Speaker
 import shutil
 
 logger = sc_logging.get_logger(__name__)
@@ -231,8 +231,7 @@ if __name__ == "__main__":
             "motor": None,
             "servo1": None,
             "servo2": None,
-            "raspi": None,
-            "speaker":None
+            "raspi": None
         }
 
         # 各デバイスのセットアップ  devicesの中に各デバイスのインスタンスを入れる
