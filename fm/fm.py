@@ -44,7 +44,7 @@ def setup(devices):
         devices["servo1"] = SG90(pin=20, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
         devices["servo2"] = SG90(pin=20, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
 
-        # pigpioのセットアップ(omusubi0はpigpio自動有効化設定済)
+        # pigpioのセットアップ
         devices["raspi"] = pigpio.pi()
         # NiCr線のセットアップ
         devices["raspi"].set_mode(NICR_PIN, pigpio.OUTPUT)  # NiCrのピンを出力モードに設定
@@ -72,8 +72,6 @@ def wait_phase(devices, data):
     try:
         logger.info("Entered wait phase")
         data["phase"] = "wait"
-        # shutil.copy("./phase_pic/camera_wait.jpg", "./camera_wait_temp.jpg")
-        # os.rename("./camera_wait_temp.jpg", "camera.jpg")
 
     except Exception as e:
         logger.exception(f"An error occured in Entering wait phase:{e}")
@@ -105,7 +103,7 @@ def fall_phase(devices, data):
         # os.rename("./camera_fall_temp.jpg", "camera.jpg")
         # devices["speaker"].audio_play("totsugeki_rappa.wav")
     except Exception as e:
-        logger.exception(f"An error occured in Entering wait phase: {e}")
+        logger.exception(f"An error occured in Entering fall phase: {e}")
                          
     # 落下して静止するまで待つ
     while True:
