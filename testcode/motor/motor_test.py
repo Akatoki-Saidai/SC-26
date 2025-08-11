@@ -20,13 +20,13 @@ try:
     while True:
         # Forward 100%
         input("move?")
-        pi.set_PWM_dutycycle(R1_GPIO, 1 * 255)
-        pi.set_PWM_dutycycle(L2_GPIO, 1 * 255)
+        pi.set_PWM_dutycycle(R2_GPIO, 1 * 255)
+        pi.set_PWM_dutycycle(L1_GPIO, 1 * 255)
         time.sleep(4)
 
         # Stop
-        pi.set_PWM_dutycycle(R1_GPIO, 0 * 255)
-        pi.set_PWM_dutycycle(L2_GPIO, 0 * 255)
+        pi.set_PWM_dutycycle(R2_GPIO, 0 * 255)
+        pi.set_PWM_dutycycle(L1_GPIO, 0 * 255)
         time.sleep(0.5)
 except KeyboardInterrupt:
     print("終了します。PWMを停止します。")

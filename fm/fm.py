@@ -42,7 +42,7 @@ def setup(devices):
 
         # サーボモーターのセットアップ
         devices["servo1"] = SG90(pin=20, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
-        devices["servo2"] = SG90(pin=20, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
+        devices["servo2"] = SG90(pin=21, min_angle=-90, max_angle=90, ini_angle=0, freq=50, logger=logger)
 
         # pigpioのセットアップ
         devices["raspi"] = pigpio.pi()
