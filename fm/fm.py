@@ -90,7 +90,7 @@ def wait_phase(devices, data):
                     print("\n\n")
                     logger.info("Ended wait phase")
                     print("\n\n")
-                    input("Ended wait phase")
+                    input("Ended wait phase")  # ⚠️後で消す
                     break
         except Exception as e:
             logger.exception(f"An error occured in wait phase:{e}")
@@ -118,13 +118,14 @@ def fall_phase(devices, data):
                 # ある程度時間が経過後も地面近くで静止し、かつ少しでも高度が変化している場合、NiCr線を焼き切る
                 if sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["gyro"]) < 0.05 and prev_line_accel != data["line_accel"] and prev_gyro != data["gyro"]:
                     logger.info("Turn on to cut nicr")
-                    devices["raspi"].write(NICR_PIN, 1) # NiCr線に電流を流す(ON)
+                    # devices["raspi"].write(NICR_PIN, 1) # ⚠️後でオンにする！⚠️NiCr線に電流を流す(ON)
                     time.sleep(5)
                     devices["raspi"].write(NICR_PIN, 0) # NiCr線に電流を流すのをストップ(OFF)
                     logger.info("Turn off nicr")
                     print("\n\n")
                     logger.info("Ended fall phase")
                     print("\n\n")
+                    input("Ended fall phase")  # ⚠️後で消す
                     break
         except Exception as e:
             logger.exception(f"An error occured in fall phase: {e}")
