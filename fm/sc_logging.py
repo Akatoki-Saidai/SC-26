@@ -16,7 +16,8 @@ def get_logger(name: str):
     now_timestamp = datetime.now().strftime("%m%dT%H%M")
     tsv_format = Formatter('%(asctime)s.%(msecs)d+09:00\t%(name)s\t%(filename)s\t%(lineno)d\t%(funcName)s\t%(levelname)s\t%(message)s', '%Y-%m-%dT%H:%M:%S')
     os.makedirs('log', exist_ok=True)
-    f_handler = RotatingFileHandler('/boot/firmware/sc26_log/sc26_' + now_timestamp + '.log', maxBytes=100*1000, encoding='utf-8')  # 最大で100kBまで記録
+    f_handler = RotatingFileHandler('./sc26_log.log', maxBytes=100*1000, encoding='utf-8')  # 最大で100kBまで記録
+    # f_handler = RotatingFileHandler('/boot/firmware/sc26_log/sc26_' + now_timestamp + '.log', maxBytes=100*1000, encoding='utf-8')  # 最大で100kBまで記録
     f_handler.setLevel(DEBUG)  # ファイルに記録するメッセージのレベル(INFO以上など)
     f_handler.setFormatter(tsv_format)
     logger.addHandler(f_handler)
