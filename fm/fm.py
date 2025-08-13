@@ -119,16 +119,17 @@ def fall_phase(devices, data):
                 if sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["gyro"]) < 0.05 and prev_line_accel != data["line_accel"] and prev_gyro != data["gyro"]:
                     logger.info("Turn on to cut nicr")
                     # devices["raspi"].write(NICR_PIN, 1) # ⚠️後でオンにする！⚠️NiCr線に電流を流す(ON)
-                    time.sleep(5)
+                    time.sleep(8)
                     devices["raspi"].write(NICR_PIN, 0) # NiCr線に電流を流すのをストップ(OFF)
                     logger.info("Turn off nicr")
                     print("\n\n")
                     logger.info("Ended fall phase")
                     print("\n\n")
-                    # input("Ended fall phase")  # ⚠️後で消す
+                    input("Ended fall phase")  # ⚠️後で消す
                     break
         except Exception as e:
             logger.exception(f"An error occured in fall phase: {e}")
+            devices["raspi"].write(NICR_PIN, 0)
 
 # 遠距離フェーズ
 def long_phase(devices, data):
@@ -259,7 +260,7 @@ if __name__ == "__main__":
         gnss_thread.start()  # GNSSによる測定をスタート
 
         # 待機フェーズを実行
-        wait_phase(devices, data)
+        # wait_phase(devices, data)  # ⚠️後でコメントアウトを解除
 
         # 落下フェーズを実行
         fall_phase(devices, data)
