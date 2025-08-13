@@ -120,7 +120,7 @@ def fall_phase(devices, data):
                 prev_line_accel, prev_gyro = copy.copy(data["line_accel"]), copy.copy(data["gyro"])
                 time.sleep(5)
                 # ある程度時間が経過後も地面近くで静止し、かつ少しでも高度が変化している場合、NiCr線を焼き切る
-                if sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["gyro"]) < 0.05 and prev_line_accel != data["line_accel"] and prev_gyro != data["gyro"]:
+                if sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.6 and sum(abs(gyro_xyz) for gyro_xyz in data["gyro"]) < 0.1 and prev_line_accel != data["line_accel"] and prev_gyro != data["gyro"]:
                     logger.info("Turn on to cut nicr")
                     devices["raspi"].write(NICR_PIN, 1) # ⚠️後でオンにする！⚠️NiCr線に電流を流す(ON)
                     time.sleep(8)
