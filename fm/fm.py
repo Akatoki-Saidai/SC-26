@@ -269,10 +269,10 @@ if __name__ == "__main__":
         gnss_thread.start()  # GNSSによる測定をスタート
 
         # 待機フェーズを実行
-        wait_phase(devices, data)  # ⚠️後でコメントアウトを解除
+        # wait_phase(devices, data)  # ⚠️後でコメントアウトを解除
 
         # 落下フェーズを実行
-        fall_phase(devices, data)
+        # fall_phase(devices, data)  # ⚠️後でコメントアウトを解除
 
         # 遠距離フェーズを実行
         long_phase(devices, data)
