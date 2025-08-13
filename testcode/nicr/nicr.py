@@ -15,7 +15,7 @@ if __name__ == "__main__":
         if user_input == 'y':
             print("NiCrをONにします。")
             pi.write(NiCr_GPIO, 1)  # NiCrをONにする
-            time.sleep(5)  # 5秒間ONにする
+            time.sleep(10)  # 5秒間ONにする
             pi.write(NiCr_GPIO, 0)  # NiCrをOFFにする
             print("NiCrをOFFにしました。")
         else:
