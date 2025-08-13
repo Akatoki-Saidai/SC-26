@@ -10,6 +10,7 @@ from bmp280 import BMP280
 from bno055 import BNO055
 from camera import Camera
 from gnss import GNSS
+from gnss_soft import GNSS_Soft
 from sg90 import SG90
 import sc_logging
 from motor import Motor
@@ -36,6 +37,9 @@ def setup(devices):
 
         # GNSS (BE-180) をセットアップ
         devices["gnss"] = GNSS(logger=logger)
+
+        # GNSS (BE-180) をセットアップ
+        devices["gnss_soft"] = GNSS_Soft(tx_pin=16, rx_pi=26, logger=logger)
 
         # モーターをセットアップ
         devices["motor"] = Motor(right_pin1=18, right_pin2=12, left_pin1=13, left_pin2=19, logger=logger)
@@ -118,14 +122,14 @@ def fall_phase(devices, data):
                 # ある程度時間が経過後も地面近くで静止し、かつ少しでも高度が変化している場合、NiCr線を焼き切る
                 if sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["gyro"]) < 0.05 and prev_line_accel != data["line_accel"] and prev_gyro != data["gyro"]:
                     logger.info("Turn on to cut nicr")
-                    # devices["raspi"].write(NICR_PIN, 1) # ⚠️後でオンにする！⚠️NiCr線に電流を流す(ON)
+                    devices["raspi"].write(NICR_PIN, 1) # ⚠️後でオンにする！⚠️NiCr線に電流を流す(ON)
                     time.sleep(8)
                     devices["raspi"].write(NICR_PIN, 0) # NiCr線に電流を流すのをストップ(OFF)
                     logger.info("Turn off nicr")
                     print("\n\n")
                     logger.info("Ended fall phase")
                     print("\n\n")
-                    input("Ended fall phase")  # ⚠️後で消す
+                    # input("Ended fall phase")  # ⚠️後で消す
                     break
         except Exception as e:
             logger.exception(f"An error occured in fall phase: {e}")
@@ -231,6 +235,7 @@ if __name__ == "__main__":
             "bmp": None,
             "bno": None,
             "gnss": None,
+            "gnss_soft": None,
             "motor": None,
             "servo1": None,
             "servo2": None,
@@ -241,7 +246,7 @@ if __name__ == "__main__":
         setup(devices)
 
         # 取得したデータ  新たなデータを取得し次第，中身を更新する
-        data = {"phase": None, "lat": None, "lon": None, "datetime_gnss": None, "alt": None, "temp": None, "press": None, "accel": [None, None, None], "line_accel": [None, None, None], "mag": [None, None, None], "gyro": [None, None, None], "grav": [None, None, None], "goal_distance": None, "goal_angle": None, "goal_lat": GOAL_LAT, "goal_lon": GOAL_LON}
+        data = {"phase": None, "lat": None, "lon": None, "datetime_gnss": None, "lat2": None, "lon2": None, "datetime_gnss2": None, "alt": None, "temp": None, "press": None, "accel": [None, None, None], "line_accel": [None, None, None], "mag": [None, None, None], "gyro": [None, None, None], "grav": [None, None, None], "goal_distance": None, "goal_angle": None, "goal_lat": GOAL_LAT, "goal_lon": GOAL_LON}
 
         # 風で適当に取った位置の仮のGPS情報
         # data["lat"] = 30.374499
@@ -259,8 +264,12 @@ if __name__ == "__main__":
         gnss_thread = Thread(target=devices["gnss"].get_forever, args=(data,))
         gnss_thread.start()  # GNSSによる測定をスタート
 
+        # 並行処理でGNSSによる測定をし続け，dataに代入し続ける
+        gnss_thread = Thread(target=devices["gnss_soft"].get_forever, args=(data,))
+        gnss_thread.start()  # GNSSによる測定をスタート
+
         # 待機フェーズを実行
-        # wait_phase(devices, data)  # ⚠️後でコメントアウトを解除
+        wait_phase(devices, data)  # ⚠️後でコメントアウトを解除
 
         # 落下フェーズを実行
         fall_phase(devices, data)
