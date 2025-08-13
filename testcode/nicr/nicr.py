@@ -11,8 +11,7 @@ if __name__ == "__main__":
     pi.write(NiCr_GPIO, 0)  # 初期状態はOFF
 
     try:
-        input("NiCrをONにしますか？ (y/n): ")
-        user_input = input().strip().lower()
+        user_input = input("NiCrをONにしますか？ (y/n): ").strip().lower()
         if user_input == 'y':
             print("NiCrをONにします。")
             pi.write(NiCr_GPIO, 1)  # NiCrをONにする
