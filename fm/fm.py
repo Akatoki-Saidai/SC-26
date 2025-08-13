@@ -82,15 +82,15 @@ def wait_phase(devices, data):
             time.sleep(0.1)
             # ここに待機フェーズの処理を書いて
             # 高度が十分高い場合
-            if 3 < data["alt"]:  # ⚠️15mに変更
+            if 15 < data["alt"]:  # ⚠️15mに変更
                 prev_alt = data["alt"]
                 time.sleep(5)
                 # ある程度時間が経過後も高度が十分高く、かつ少しでも高度が変化している場合、待機フェーズを終了
-                if 4 < data["alt"] and prev_alt != data["alt"]:  # ⚠️15mに変更
+                if 15 < data["alt"] and prev_alt != data["alt"]:  # ⚠️15mに変更
                     print("\n\n")
                     logger.info("Ended wait phase")
                     print("\n\n")
-                    input("Ended wait phase")  # ⚠️後で消す
+                    # input("Ended wait phase")  # ⚠️後で消す
                     break
         except Exception as e:
             logger.exception(f"An error occured in wait phase:{e}")
@@ -125,7 +125,7 @@ def fall_phase(devices, data):
                     print("\n\n")
                     logger.info("Ended fall phase")
                     print("\n\n")
-                    input("Ended fall phase")  # ⚠️後で消す
+                    # input("Ended fall phase")  # ⚠️後で消す
                     break
         except Exception as e:
             logger.exception(f"An error occured in fall phase: {e}")
