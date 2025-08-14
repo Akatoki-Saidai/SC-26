@@ -38,6 +38,7 @@ class GNSS_Soft:
         """ソフトUART経由でGNSSデータを取得"""
         while True:
             (count, data) = self._pi.bb_serial_read(self._rx_pin)
+            print(f"{count=}")
             if count > 0:
                 try:
                     text = data.decode('utf-8', errors='ignore')
