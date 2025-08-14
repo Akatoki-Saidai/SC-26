@@ -7,7 +7,7 @@ import sys
 import calc_goal
 
 class GNSS_Soft:
-    def __init__(self, tx_pin=14, rx_pin=15, baudrate=9600, logger=None):
+    def __init__(self, tx_pin=16, rx_pin=26, baudrate=9600, logger=None):
         # ログ設定
         if logger is None:
             logger = getLogger(__name__)
@@ -79,7 +79,7 @@ class GNSS_Soft:
 
 if __name__ == "__main__":
     try:
-        gnss = GNSS_Soft(rx_pin=15, baudrate=9600)  # RXピン番号を環境に合わせて変更
+        gnss = GNSS_Soft(rx_pin=26, baudrate=9600)  # RXピン番号を環境に合わせて変更
         data = {"lat": None, "lon": None}
         gnss.get_forever(data)
     except KeyboardInterrupt:
