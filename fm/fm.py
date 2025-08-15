@@ -116,7 +116,7 @@ def fall_phase(devices, data):
             time.sleep(0.1)
             # ここに落下フェーズの処理を書いて
             # 地面近くで静止している場合
-            if data["alt"] < 5 and sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["line_accel"]) < 0.025:
+            if data["alt"] < 5 and sum(abs(line_accel_xyz) for line_accel_xyz in data["line_accel"]) < 0.5 and sum(abs(gyro_xyz) for gyro_xyz in data["gyro"]) < 0.025:
                 prev_line_accel, prev_gyro = copy.copy(data["line_accel"]), copy.copy(data["gyro"])
                 time.sleep(5)
                 # ある程度時間が経過後も地面近くで静止し、かつ少しでも高度が変化している場合、NiCr線を焼き切る
