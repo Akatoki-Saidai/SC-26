@@ -19,45 +19,45 @@ class Motor:
         self._pi = pigpio.pi()
 
         # Stop
-        self._pi.hardware_PWM(self._right_pin1, 200000, 0)
-        self._pi.hardware_PWM(self._right_pin2, 200000, 0)
-        self._pi.hardware_PWM(self._left_pin1, 200000, 0)
-        self._pi.hardware_PWM(self._left_pin2, 200000, 0)
+        self._pi.set_PWM_frequency(self._right_pin1, 1000)  # 1kHz
+        self._pi.set_PWM_frequency(self._right_pin2, 1000)  # 1kHz
+        self._pi.set_PWM_frequency(self._left_pin1, 1000)  # 1kHz
+        self._pi.set_PWM_frequency(self._left_pin2, 1000)  # 1kHz
     
     def set_right(self, speed):
         """右モーターの速度を設定"""
         if speed > 1:
-            speed = 1000000
+            speed = 255
         else:
-            speed = int(speed * 1000000)
+            speed = int(speed * 255)
 
         if speed >= 0:
-            self._pi.hardware_PWM(self._right_pin1, 200000, speed)
-            self._pi.hardware_PWM(self._right_pin2, 200000, 0)
+            self._pi.set_PWM_dutycycle(self._right_pin2, speed)
+            self._pi.set_PWM_dutycycle(self._right_pin1, 0)
         elif speed < 0:
-            self._pi.hardware_PWM(self._right_pin1, 200000, 0)
-            self._pi.hardware_PWM(self._right_pin2, 200000, -speed)
+            self._pi.set_PWM_dutycycle(self._right_pin1, speed)
+            self._pi.set_PWM_dutycycle(self._right_pin2, 0)
     
     def set_left(self, speed):
         """左モーターの速度を設定"""
         if speed > 1:
-            speed = 1000000
+            speed = 255
         else:
-            speed = int(speed * 1000000)
+            speed = int(speed * 255)
 
         if speed >= 0:
-            self._pi.hardware_PWM(self._left_pin1, speed, 200000)
-            self._pi.hardware_PWM(self._left_pin2, 0, 200000)
+            self._pi.set_PWM_dutycycle(self._left_pin1, speed)
+            self._pi.set_PWM_dutycycle(self._left_pin2, 0)
         elif speed < 0:
-            self._pi.hardware_PWM(self._left_pin1, 0, 200000)
-            self._pi.hardware_PWM(self._left_pin2, -speed, 200000)
+            self._pi.set_PWM_dutycycle(self._left_pin2, speed)
+            self._pi.set_PWM_dutycycle(self._left_pin1, 0)
     
     def stop(self):
         """モーターを停止"""
-        self._pi.hardware_PWM(self._right_pin1, 200000, 0)
-        self._pi.hardware_PWM(self._right_pin2, 200000, 0)
-        self._pi.hardware_PWM(self._left_pin1, 200000, 0)
-        self._pi.hardware_PWM(self._left_pin2, 200000, 0)
+        self._pi.set_PWM_dutycycle(self._right_pin1, 0)
+        self._pi.set_PWM_dutycycle(self._right_pin2, 0)
+        self._pi.set_PWM_dutycycle(self._left_pin1, 0)
+        self._pi.set_PWM_dutycycle(self._left_pin2, 0)
 
     def turn(self, angle):
         """指定した角度だけ回転
