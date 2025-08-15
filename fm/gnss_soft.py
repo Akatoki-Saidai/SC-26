@@ -38,7 +38,7 @@ class GNSS_Soft:
         """ソフトUART経由でGNSSデータを取得"""
         while True:
             (count, data) = self._pi.bb_serial_read(self._rx_pin)
-            print(f"{count=}")
+            # print(f"{count=}")
             if count > 0:
                 try:
                     text = data.decode('utf-8', errors='ignore')
@@ -80,7 +80,7 @@ class GNSS_Soft:
 
 if __name__ == "__main__":
     try:
-        gnss = GNSS_Soft(rx_pin=26, baudrate=9600)  # RXピン番号を環境に合わせて変更
+        gnss = GNSS_Soft(rx_pin=20, baudrate=38400)  # RXピン番号を環境に合わせて変更
         data = {"lat": None, "lon": None}
         gnss.get_forever(data)
     except KeyboardInterrupt:

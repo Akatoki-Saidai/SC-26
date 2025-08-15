@@ -165,7 +165,11 @@ def long_phase(devices, data):
     while True:
         try:
             time.sleep(0.1)
-            devices["motor"].turn(data["goal_angle"]) # 回転する
+            print(f"goal_angle: {data["goal_angle"]}")
+            if data["goal_angle"] is None:
+                devices["motor"].turn(0)
+            else:
+                devices["motor"].turn(data["goal_angle"]) # 回転する
             
             # GPSがタイムアウト
             if time.time() - long_start_time > 360 and data["goal_angle"] is None:
