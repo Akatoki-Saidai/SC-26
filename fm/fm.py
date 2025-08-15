@@ -151,11 +151,11 @@ def long_phase(devices, data):
     # 機体がひっくり返っていたら回る
     try:
         # ここに機体の向きを判定する処理を書く
-        if data["gyro"][2] < 0:
+        if data["grav"][2] < 0:
             start_time = time.time()
             devices["motor"].turn(0) # 0度(前進)に向く
             logger.info("muki_hantai")
-            while data["gyro"][2] < 0 and time.time() - start_time < 5:
+            while data["grav"][2] < 0 and time.time() - start_time < 5:
                 pass
             devices["motor"].turn(0) # 0度(前進)に向く
     except Exception as e:
